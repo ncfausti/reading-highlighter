@@ -1,0 +1,13 @@
+{
+  "name": "A browser extension that allows the user to highlight text on hover.",
+  "description": "Highlight text as you move your mouse pointer over it.",
+  "version": "1.0",
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [{
+      "matches":["<all_urls>"],
+      "js":["content.js"]
+  }],
+  "manifest_version": 2
+}
