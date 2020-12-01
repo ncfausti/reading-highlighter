@@ -1,4 +1,4 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
+// Copyright (c) 2020 Nick Fausti. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 ("use strict");
@@ -47,27 +47,32 @@ function processWithSideEffects(node, container) {
 }
 
 var styles =
-  ".highlighter:hover, .highlighter:hover + span, .highlighter:hover + span + span  { background-color: #FFD567 !important; cursor:none; }";
+  ".highlighter:hover, .highlighter:hover + span, .highlighter:hover + span + span  { background-color: #FFD567 !important; cursor:auto; }";
 addStyle(styles);
 
-let P = document.querySelectorAll("p");
 
-for (const i in P) {
-  // NodeList
-  let nodes = P[i].childNodes;
-  let p_container = document.createElement("p");
+let elemType = ['p'];
 
-  for (const e in nodes) {
-    processWithSideEffects(nodes[e], p_container);
-  }
-  if (nodes) replace(nodes[0], p_container);
+for(let j in elemType) {
+  let P = document.querySelectorAll(elemType[j]);
 
-  function replace(oldNode, newNode) {
-    if (oldNode.parentNode.parentNode) {
-      oldNode.parentNode.parentNode.replaceChild(
-        p_container,
-        oldNode.parentNode
-      );
+  for (let i in P) {
+    // NodeList
+    let nodes = P[i].childNodes;
+    let p_container = document.createElement(elemType[j]);
+
+    for (let e in nodes) {
+      processWithSideEffects(nodes[e], p_container);
+    }
+    if (nodes) replace(nodes[0], p_container);
+
+    function replace(oldNode) {
+      if (oldNode) {
+        oldNode.parentNode.parentNode.replaceChild(
+          p_container,
+          oldNode.parentNode
+        );
+      }
     }
   }
 }
